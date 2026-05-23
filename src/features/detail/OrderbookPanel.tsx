@@ -49,9 +49,9 @@ export function OrderbookPanel({ symbol, depth = 10 }: Props) {
         <>
           {/* Asks: shown reversed so the best ask sits adjacent to the spread row */}
           <div className="py-1">
-            {[...snapshot.asks].reverse().map((level) => (
+            {[...snapshot.asks].reverse().map((level, i) => (
               <OrderbookRow
-                key={`a-${level.price}`}
+                key={`a-${i}-${level.price}`}
                 level={level}
                 side="ask"
                 depthPct={(level.total / maxTotal) * 100}
@@ -69,9 +69,9 @@ export function OrderbookPanel({ symbol, depth = 10 }: Props) {
           </div>
 
           <div className="py-1">
-            {snapshot.bids.map((level) => (
+            {snapshot.bids.map((level, i) => (
               <OrderbookRow
-                key={`b-${level.price}`}
+                key={`b-${i}-${level.price}`}
                 level={level}
                 side="bid"
                 depthPct={(level.total / maxTotal) * 100}
