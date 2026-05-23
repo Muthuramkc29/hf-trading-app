@@ -8,7 +8,7 @@ export interface IntervalRange {
 }
 
 export type IntervalsConfig = Partial<
-  Record<"all_trades" | "l2_orderbook" | "v2/ticker" | "candlestick", IntervalRange>
+  Record<"all_trades" | "l2_orderbook" | "v2/ticker", IntervalRange>
 >;
 
 export type StressPreset = "normal" | "fast" | "extreme";
@@ -18,19 +18,16 @@ export const PRESETS: Record<StressPreset, IntervalsConfig> = {
     all_trades: { min: 200, max: 400 },
     l2_orderbook: { min: 200, max: 400 },
     "v2/ticker": { min: 200, max: 400 },
-    candlestick: { min: 200, max: 400 },
   },
   fast: {
     all_trades: { min: 50, max: 100 },
     l2_orderbook: { min: 50, max: 100 },
     "v2/ticker": { min: 50, max: 100 },
-    candlestick: { min: 50, max: 100 },
   },
   extreme: {
     all_trades: { min: 5, max: 20 },
     l2_orderbook: { min: 10, max: 40 },
     "v2/ticker": { min: 10, max: 50 },
-    candlestick: { min: 5, max: 20 },
   },
 };
 

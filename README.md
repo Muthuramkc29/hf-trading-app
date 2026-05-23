@@ -1,6 +1,6 @@
 # Crypto Price Tracker
 
-Real-time crypto market UI built against the [`saxenanickk/socket-custom-load`](https://github.com/saxenanickk/socket-custom-load) mock WebSocket server. React 18 + TypeScript (strict), Vite, Zustand, TanStack Query, Tailwind CSS, lightweight-charts, Jest + React Testing Library.
+Real-time crypto market UI built against the [`saxenanickk/socket-custom-load`](https://github.com/saxenanickk/socket-custom-load) mock WebSocket server. React 18 + TypeScript (strict), Vite, Zustand, TanStack Query, Tailwind CSS, Jest + React Testing Library.
 
 ## Quick start
 
@@ -43,7 +43,7 @@ npm test
 ## What's in the box
 
 - **List view** (`/`): all 6 perpetuals with live last price, 24h change, volume; search by name/symbol; All / ★ Favorites filter; favorites persisted in `localStorage`.
-- **Detail view** (`/symbol/:symbol`): live ticker (mark, 24h high/low, volume, funding rate), 10-deep orderbook with depth bars + spread, last 30 trades with side-coloured flash-in animation, 1-minute candlestick chart, **Stress Test** controls (Normal / Fast / Extreme — re-tunes the server via `POST /intervals`).
+- **Detail view** (`/symbol/:symbol`): live ticker (mark, 24h high/low, volume, funding rate), 10-deep orderbook with depth bars + spread, last 30 trades with side-coloured flash-in animation, **Stress Test** controls (Normal / Fast / Extreme — re-tunes the server via `POST /intervals`).
 - **Connection badge** in the header: idle / connecting / connected / reconnecting (with attempt #) / offline.
 - **Light + dark** themes (system-preferred on first load, persisted thereafter).
 - **Responsive** down to 375 px; the orderbook + trades stack vertically below `lg`.
@@ -60,10 +60,9 @@ src/
     useTicker         detail view: RAF-batched single-symbol ticker
     useOrderbook      RAF-batched top-N orderbook with cumulative totals
     useTrades         RAF-flushed ring buffer (max 30)
-    useCandles        seeds + live-updates 1m bars
   store/              zustand: connection, tickers, favorites (persisted), theme
   features/list/      ListView, TickerRow (memoized, per-symbol selector)
-  features/detail/    DetailView, OrderbookPanel, TradesPanel, MiniChart, StressTestControls
+  features/detail/    DetailView, OrderbookPanel, TradesPanel, StressTestControls
   lib/                format, parse (wire → domain), rafBatch, throttle
   types/              messages (wire), domain (parsed)
 ```
@@ -84,7 +83,6 @@ The mock server is brutal by default: `l2_orderbook` ships **500-level full snap
 | Trades flicker | Ring buffer in a ref (max 30), RAF flush. Stable `id` keys keep React reusing rows; only the freshly mounted top row plays a CSS `@keyframes` flash. No JS animation, no extra renders. |
 | Ticker fan-out (6 symbols × 50 Hz) | Per-symbol **trailing throttle** to 200 ms before writing to the Zustand `tickers` store. Each `TickerRow` subscribes with a **selector** (`tickers[symbol]`), so updates to one row never re-render the others. |
 | Memoization | `TickerRow`, `OrderbookRow`, `TradeRow` are all `React.memo`'d with shallow prop equality; the orderbook row uses a custom comparator on visible fields. |
-| Chart | Canvas-backed `lightweight-charts` — handles 60 Hz `update()` calls natively, no DOM blow-up. |
 | Search | Filters in-memory (6 entries) inside `useMemo`. Trivially cheap but keeps the pattern correct if the symbol list grows. |
 | Memory | Every hook returns the `socket.subscribe` unsubscribe and calls it in cleanup. No global timers without cleanup. RAF handles are cancelled on unmount. Verified clean under React StrictMode (double-mount). |
 
@@ -116,7 +114,7 @@ The mock server is brutal by default: `l2_orderbook` ships **500-level full snap
 
 - Web worker for parsing 500-level orderbook snapshots — keep the main thread under the 16 ms budget even with N = 50 levels visible.
 - Virtualize the trades list (e.g. `react-virtual`) once the cap goes above ~100.
-- Per-row sparklines on the list view fed by `candlestick_1m`.
+- Mini price chart on the detail view (was descoped; the server exposes a `candlestick_<res>` channel for this).
 - Heartbeat-driven "stale data" surface — show a warning if a subscribed channel goes silent > 3 s while the socket is still open.
 - Wider test coverage: `socket.ts` reconnect path under a fake WS, error boundary recovery, theme persistence.
 - Accessibility audit: focus order, ARIA live regions for price updates that don't spam SRs.

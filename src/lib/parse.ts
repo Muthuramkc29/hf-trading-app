@@ -2,14 +2,12 @@ import type {
   WireTicker,
   WireOrderbook,
   WireTrade,
-  WireCandle,
 } from "@/types/messages";
 import type {
   Ticker,
   OrderbookLevel,
   OrderbookSnapshot,
   Trade,
-  Candle,
 } from "@/types/domain";
 
 const num = (v: string | number | undefined): number => {
@@ -99,16 +97,5 @@ export function parseTrade(w: WireTrade): Trade {
     size,
     side,
     timestamp: toMs(w.timestamp),
-  };
-}
-
-export function parseCandle(w: WireCandle): Candle {
-  return {
-    time: Math.floor(toMs(w.candle_start_time) / 1000), // → seconds (lwc convention)
-    open: num(w.open),
-    high: num(w.high),
-    low: num(w.low),
-    close: num(w.close),
-    volume: num(w.volume),
   };
 }

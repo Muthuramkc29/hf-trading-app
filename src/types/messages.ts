@@ -23,11 +23,7 @@ export const SYMBOL_META: Record<Symbol, { name: string; priceDecimals: number }
   DOGEUSD: { name: "Dogecoin", priceDecimals: 6 },
 };
 
-export type ChannelName =
-  | "v2/ticker"
-  | "l2_orderbook"
-  | "all_trades"
-  | `candlestick_${"1m" | "5m" | "15m" | "30m" | "1h" | "4h" | "1d" | "1w"}`;
+export type ChannelName = "v2/ticker" | "l2_orderbook" | "all_trades";
 
 export interface SubscribeFrame {
   type: "subscribe" | "unsubscribe";
@@ -76,19 +72,6 @@ export interface WireTrade {
   product_id?: string;
 }
 
-export interface WireCandle {
-  type: "candlestick";
-  symbol: Symbol;
-  resolution: string;
-  candle_start_time: number;
-  open: string;
-  high: string;
-  low: string;
-  close: string;
-  volume: string;
-  timestamp: number;
-}
-
 export interface SubscriptionsAck {
   type: "subscriptions";
   payload: { channels: Array<{ name: ChannelName; symbols: Symbol[] }> };
@@ -98,5 +81,4 @@ export type IncomingMessage =
   | WireTicker
   | WireOrderbook
   | WireTrade
-  | WireCandle
   | SubscriptionsAck;

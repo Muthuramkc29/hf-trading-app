@@ -47,15 +47,6 @@ export interface Trade {
   timestamp: number; // ms
 }
 
-export interface Candle {
-  time: number; // seconds (lightweight-charts convention)
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
-}
-
 export type ConnectionStatus =
   | "idle"
   | "connecting"

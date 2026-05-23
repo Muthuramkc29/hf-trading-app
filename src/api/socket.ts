@@ -195,13 +195,9 @@ class SocketClient {
    * Parses one incoming raw frame and routes it to listeners for its
    * `(channel, symbol)`.
    *
-   * Two non-obvious behaviors:
-   * - Candlestick messages carry `type: "candlestick"` but were subscribed
-   *   under `candlestick_<resolution>`, so the channel name is reconstructed
-   *   from `msg.resolution` before lookup.
-   * - Listeners are invoked over a snapshot of the set so a listener can
-   *   safely unsubscribe itself during dispatch. Errors from one listener are
-   *   logged and swallowed so they cannot break the others.
+   * Listeners are invoked over a snapshot of the set so a listener can safely
+   * unsubscribe itself during dispatch. Errors from one listener are logged
+   * and swallowed so they cannot break the others.
    */
   private dispatch(raw: unknown) {
     if (typeof raw !== "string") return;
@@ -212,16 +208,9 @@ class SocketClient {
       return;
     }
     if (msg.type === "subscriptions") return;
-
-    // Resolve channel key — candlesticks use type "candlestick" but were
-    // subscribed via channel name `candlestick_<res>`. Map both directions.
-    const channel =
-      msg.type === "candlestick"
-        ? (`candlestick_${msg.resolution}` as ChannelName)
-        : (msg.type as ChannelName);
-
     if (!("symbol" in msg)) return;
-    const key = channelKey(channel, msg.symbol);
+
+    const key = channelKey(msg.type as ChannelName, msg.symbol);
     const listeners = this.listeners.get(key);
     if (!listeners) return;
     // Iterate over a snapshot in case a listener unsubscribes itself.

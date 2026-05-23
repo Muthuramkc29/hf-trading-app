@@ -5,7 +5,6 @@ import { DetailHeader } from "./DetailHeader";
 import { TickerStats } from "./TickerStats";
 import { OrderbookPanel } from "./OrderbookPanel";
 import { TradesPanel } from "./TradesPanel";
-import { MiniChart } from "./MiniChart";
 import { StressTestControls } from "./StressTestControls";
 
 function isSymbol(s: string | undefined): s is Symbol {
@@ -35,7 +34,6 @@ function DetailViewInner({ symbol }: { symbol: Symbol }) {
         </div>
       </section>
 
-      <MiniChart symbol={symbol} />
       <StressTestControls />
     </div>
   );
