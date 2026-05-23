@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 247 248 250;
+  --surface: 255 255 255;
+  --surface-2: 244 246 250;
+  --border: 226 230 236;
+  --text: 15 23 42;
+  --muted: 100 116 139;
+  --up: 16 163 74;
+  --down: 220 38 38;
+  --accent: 59 130 246;
+  --star: 234 179 8;
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  --bg: 11 15 23;
+  --surface: 17 22 33;
+  --surface-2: 23 30 44;
+  --border: 36 45 64;
+  --text: 226 232 240;
+  --muted: 148 163 184;
+  --up: 34 197 94;
+  --down: 248 113 113;
+  --accent: 96 165 250;
+  --star: 250 204 21;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg text-text font-sans antialiased;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Depth bar layer for orderbook rows */
+.depth-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  transform-origin: right center;
+  pointer-events: none;
+  will-change: transform;
+}
