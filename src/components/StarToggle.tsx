@@ -14,6 +14,7 @@ export function StarToggle({ symbol, size = 18 }: Props) {
     <button
       type="button"
       onClick={(e) => {
+        e.preventDefault();
         e.stopPropagation();
         toggle(symbol);
       }}
