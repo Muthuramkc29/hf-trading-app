@@ -1,6 +1,6 @@
 # Crypto Price Tracker
 
-Real-time crypto market UI built against the [`saxenanickk/socket-custom-load`](https://github.com/saxenanickk/socket-custom-load) mock WebSocket server. React 18 + TypeScript (strict), Vite, Zustand, TanStack Query, Tailwind CSS, Jest + React Testing Library.
+Real-time crypto market UI built against a mock WebSocket server. React 18 + TypeScript (strict), Vite, Zustand, TanStack Query, Tailwind CSS, Jest + React Testing Library.
 
 ## Quick start
 
